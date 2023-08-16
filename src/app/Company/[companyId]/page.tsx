@@ -1,6 +1,6 @@
 "use client";
 import ApiCompanies from "@/app/api/ApiCompanies";
-import Navbar from "@/app/component/Navbar/Navbar";
+import Navbar from "../../component/navbar/Navbar";
 import CompanyNav from "@/app/component/company/CompanyDetail/CompanyNav/CompanyNav";
 import Positions from "@/app/component/company/CompanyDetail/Positions/Positions";
 import Department from "@/app/component/company/CompanyDetail/department/Department";

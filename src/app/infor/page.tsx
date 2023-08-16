@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense, useState } from "react";
-import Navbar from "../component/Navbar/Navbar";
+import Navbar from "../component/navbar/Navbar";
 import { useQuery } from "react-query";
 import ApiUser from "../api/ApiUser";
 import { MdAddAPhoto } from "react-icons/md";
