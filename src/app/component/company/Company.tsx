@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "react-query";
 import "./Company.scss";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,Suspense } from "react";
 import ApiCompanies from "@/app/api/ApiCompanies";
 import CompanyItem from "./CompanyItem/CompanyItem";
 import { Button, Empty } from "antd";
@@ -65,12 +65,14 @@ function Company() {
           </Button>
         </div>
         <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-3">
+           <Suspense fallback={<Spin size="large" delay={500} />}>
           {isLoading && <Loading1 />}
           {isLoading === false && data ? (
             data?.map((item, i) => <CompanyItem key={i} item={item} />)
           ) : (
             <Empty className="mt-10 col-start-1 col-end-4" />
           )}
+             </Suspense>
         </div>
       </div>
       <CreateCompany
