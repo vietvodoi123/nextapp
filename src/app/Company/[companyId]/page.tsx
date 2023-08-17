@@ -16,9 +16,8 @@ function CompanyDetailPage({ params }: { params: { companyId: string } }) {
     data.then((d) => {
       setCompany(d);
     });
-  }, []);
+  }, [params.companyId]);
   const nav = useSelector((state: IRootState) => state.compayNav.nav);
-  console.log(nav);
 
   return (
     <div>
