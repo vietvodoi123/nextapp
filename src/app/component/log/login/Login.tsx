@@ -12,9 +12,11 @@ import { useDispatch } from "react-redux";
 import "./Login.scss";
 import * as Yup from "yup";
 import { setNavKey } from "@/redux/slice/NavSlice";
-type Props = {};
+type Props = {
+  setIsLoading: (value: boolean) => void;
+};
 
-function Login({}: Props) {
+function Login({ setIsLoading }: Props) {
   const dispatch = useDispatch();
   const loginMutation = useMutation(ApiUser.login);
   const loginValidate = Yup.object().shape({
@@ -31,6 +33,7 @@ function Login({}: Props) {
     values: ILoginBody,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ): void => {
+    setIsLoading(true);
     if (values.email != "" && values.password != "") {
       const username = values.email.split("@")[0];
       console.log(username, values);
@@ -59,6 +62,7 @@ function Login({}: Props) {
     } else {
       setSubmitting(false);
     }
+    setIsLoading(false);
   };
 
   return (

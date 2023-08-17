@@ -1,12 +1,8 @@
-import { Spin } from "antd";
+import Loading1 from "../component/Loading";
 import React from "react";
 
 function Loading() {
-  return (
-    <div className=" w-screen h-screen flex justify-center items-center">
-      <Spin className=" w-[100px] h-[100px]" /><p>Loading.....!</p>
-    </div>
-  );
+  return <Loading1 />;
 }
 
 export default Loading;

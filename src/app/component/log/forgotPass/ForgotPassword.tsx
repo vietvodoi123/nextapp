@@ -9,9 +9,11 @@ import { useMutation } from "react-query";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { setEmail, setNavKey } from "@/redux/slice/NavSlice";
-type Props = {};
+type Props = {
+  setIsLoading: (value: boolean) => void;
+};
 
-function ForgotPass({}: Props) {
+function ForgotPass({ setIsLoading }: Props) {
   const dispatch = useDispatch();
   const forgotPassMutation = useMutation(ApiUser.forgotPassword);
   const loginValidate = Yup.object().shape({
@@ -22,6 +24,7 @@ function ForgotPass({}: Props) {
   });
   const handleSendOtp = (values: ISendOtp): void => {
     if (values.email) {
+      setIsLoading(true);
       forgotPassMutation.mutate(
         {
           email: values.email,
@@ -46,6 +49,7 @@ function ForgotPass({}: Props) {
         }
       );
     }
+    setIsLoading(false);
   };
   return (
     <Formik

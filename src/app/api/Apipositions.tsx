@@ -14,6 +14,18 @@ function getAllPositions(idCompany: string): Promise<IDataPositions[]> {
     { "x-company-id": idCompany }
   );
 }
+function getAllPositionsBySearch(
+  idCompany: string,
+  search: string
+): Promise<IDataPositions[]> {
+  return fetcher(
+    {
+      url: path.position,
+      method: "get",
+    },
+    { "x-company-id": idCompany, search: search }
+  );
+}
 function createPositions({
   idCompany,
   data,
@@ -35,4 +47,5 @@ function createPositions({
 export default {
   getAllPositions,
   createPositions,
+  getAllPositionsBySearch,
 };

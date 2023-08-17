@@ -1,22 +1,56 @@
 "use client";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Navbar from "../component/navbar/Navbar";
 import { useQuery } from "react-query";
 import ApiUser from "../api/ApiUser";
 import { MdAddAPhoto } from "react-icons/md";
-import { Button, Modal, Skeleton } from "antd";
+import { Button, Empty, Modal, Skeleton } from "antd";
 import UpdateUser from "../modal/UpdateUser/UpdateUser";
 import UpdateAvatar from "../modal/UpdateAvatar/UpdateAvatar";
+import { useDispatch } from "react-redux";
+import { setWorkspaceId } from "@/redux/slice/NavSlice";
+import Loading1 from "../component/Loading";
+import ApiAbilities from "../api/ApiAbilities";
+import ApiCompanies from "../api/ApiCompanies";
+import { IDataCompany } from "@/types";
+import { useRouter } from "next/navigation";
 
 function UserPage() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenAvatar, setIsOpenAvatar] = useState(false);
+  const [dataCompany, setDataCompany] = useState<IDataCompany>();
   const { data } = useQuery("me", ApiUser.getMe);
+
+  useEffect(() => {
+    setIsLoading(true);
+    if (data?.profile?.workspaceId) {
+      // lay tat ca thong tin tai khoan: companyid, deptId, positionId
+      const data1 = ApiAbilities.getMe(data?.profile?.workspaceId?.toString());
+      data1.then((d) => {
+        console.log(d);
+      });
+
+      const data2 = ApiCompanies.getCompanyById(
+        data.profile.workspaceId.toString()
+      );
+      data2.then((d) => {
+        setDataCompany(d);
+      });
+    }
+    setIsLoading(false);
+  }, [data]);
+
+  const dispatch = useDispatch();
+  if (data?.profile?.workspaceId) {
+    dispatch(setWorkspaceId(data?.profile?.workspaceId));
+  }
 
   return (
     <>
       <Navbar />
-      <Suspense fallback={<Skeleton />}>
+      <Suspense fallback={<Loading1 />}>
         <div className="flex flex-col justify-center items-center mt-16 relative">
           <div className=" relative">
             <img
@@ -31,14 +65,14 @@ function UserPage() {
             >
               <MdAddAPhoto className=" w-[30px] h-[30px]" />
             </div>
-            <Button
-              size="large"
-              className=" absolute top-0 right-[-350px] border-solid border-2 border-slate-600 text-slate-600 text-[20px]"
-              onClick={() => setIsOpen(true)}
-            >
-              Edit
-            </Button>
           </div>
+          <Button
+            size="large"
+            className=" absolute top-0 right-[20px] border-solid border-2 border-slate-600 text-slate-600 text-[20px]"
+            onClick={() => setIsOpen(true)}
+          >
+            Edit
+          </Button>
           {data?.fullName && (
             <span className="text-[20px] font-medium mt-2">
               {data?.fullName}
@@ -56,6 +90,24 @@ function UserPage() {
           <UpdateAvatar isOpen={isOpenAvatar} setIsOpen={setIsOpenAvatar} />
         )}
       </Suspense>
+
+      {isLoading && <Loading1 />}
+      {isLoading === false && dataCompany ? (
+        <div className="mt-[50px] text-center">
+          <h1
+            className="text-[20px] hover:cursor-pointer"
+            onClick={() =>
+              router.push(`/Company/${data?.profile?.workspaceId}`)
+            }
+          >
+            Company: {dataCompany.displayName}
+          </h1>
+          <h1 className="text-[20px] hover:cursor-pointer">Department: {}</h1>
+          <h1 className="text-[20px] hover:cursor-pointer">Positions: {}</h1>
+        </div>
+      ) : (
+        <Empty className="mt-[50px]" />
+      )}
     </>
   );
 }

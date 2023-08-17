@@ -9,19 +9,23 @@ import UpdateCompany from "@/app/modal/updateCompany/UpdateCompany";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useMutation } from "react-query";
 import ApiUser from "@/app/api/ApiUser";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "@/redux/store";
 import { AiOutlineCheck } from "react-icons/ai";
+import ApiAbilities from "@/app/api/ApiAbilities";
+import { setWorkspaceId } from "@/redux/slice/NavSlice";
+//
+//
 type Props = {
   company: IDataCompany;
 };
 
 function CompanyHeaderDetail({ company }: Props) {
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const updateMeMutation = useMutation(ApiUser.updateMe);
-  const workspaceId = useSelector(
-    (state: IRootState) => state.user.user?.profile?.workspaceId
-  );
+
+  const workspaceId = useSelector((state: IRootState) => state.nav.workspace);
 
   function handleSubmit(): void {
     updateMeMutation.mutate(
@@ -32,6 +36,7 @@ function CompanyHeaderDetail({ company }: Props) {
       },
       {
         onSuccess: (res: IUserLogin) => {
+          dispatch(setWorkspaceId(company.id));
           notification.success({
             message: "Update workspace sucessfull",
           });
@@ -99,7 +104,7 @@ function CompanyHeaderDetail({ company }: Props) {
         }}
         className="border-solid border-2 border-slate-500 absolute right-[100px] top-[20px]  bg-black text-white"
       >
-        {workspaceId === company.id ? <AiOutlinePlus /> : <AiOutlineCheck />}
+        {workspaceId === company.id ? <AiOutlineCheck /> : <AiOutlinePlus />}
       </Button>
 
       {isOpen && (

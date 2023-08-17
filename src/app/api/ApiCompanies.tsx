@@ -12,7 +12,17 @@ function getAllCompanies(): Promise<IDataCompany[]> {
     method: "get",
   });
 }
-
+function getAllCompaniesBySearch(search: string): Promise<IDataCompany[]> {
+  return fetcher(
+    {
+      url: path.company,
+      method: "get",
+    },
+    {
+      search: search,
+    }
+  );
+}
 function createCompanies(data: FormData): Promise<IDataCompany> {
   return fetcher(
     {
@@ -68,4 +78,5 @@ export default {
   getCompanyById,
   deleteCompany,
   updateCompany,
+  getAllCompaniesBySearch,
 };

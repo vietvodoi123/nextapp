@@ -1,9 +1,9 @@
 "use client";
 import { IRootState } from "@/redux/store";
 import { Spin, Steps } from "antd";
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { useSelector } from "react-redux";
-
+import Loading1 from "../../component/Loading";
 const FormOtp = React.lazy(() => import("./formOtp/FormOtp"));
 const Login = React.lazy(() => import("./login/Login"));
 const Register = React.lazy(() => import("./register/Register"));
@@ -11,6 +11,9 @@ const ForgotPass = React.lazy(() => import("./forgotPass/ForgotPassword"));
 const NewPassword = React.lazy(() => import("./newPassword/NewPassword"));
 
 function Log() {
+  const [isLoading, setIsLoading] = useState(false);
+  console.log(isLoading);
+
   const key = useSelector((state: IRootState) => state.nav.key);
   const steps = useSelector((state: IRootState) => state.nav.steps);
   return (
@@ -44,13 +47,21 @@ function Log() {
         </div>
       )}
       <div className="container-login">
-        <Suspense fallback={<Spin size="large" delay={500} />}>
-          {key === "sendOtp" && <FormOtp />}
-          {key === "signin" && <Login />}
-          {key === "register" && <Register />}
-          {key === "forgotpass" && <ForgotPass />}
-          {key === "newpassword" && <NewPassword />}
-        </Suspense>
+        {!isLoading ? (
+          <Suspense
+            fallback={<Spin size="large" delay={500} className=" text-white" />}
+          >
+            {key === "sendOtp" && <FormOtp setIsLoading={setIsLoading} />}
+            {key === "signin" && <Login setIsLoading={setIsLoading} />}
+            {key === "register" && <Register setIsLoading={setIsLoading} />}
+            {key === "forgotpass" && <ForgotPass setIsLoading={setIsLoading} />}
+            {key === "newpassword" && (
+              <NewPassword setIsLoading={setIsLoading} />
+            )}
+          </Suspense>
+        ) : (
+          <Loading1 />
+        )}
       </div>
     </main>
   );

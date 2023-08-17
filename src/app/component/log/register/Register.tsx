@@ -13,7 +13,7 @@ import * as Yup from "yup";
 import { setEmail, setNavKey, setSteps } from "@/redux/slice/NavSlice";
 import { error } from "console";
 
-function Login() {
+function Login({ setIsLoading }: { setIsLoading: (value: boolean) => void }) {
   const dispatch = useDispatch();
   const registerMutation = useMutation(ApiUser.register);
   const sendOtpMutation = useMutation(ApiUser.sendOtp);
@@ -37,7 +37,7 @@ function Login() {
 
     if (values.email && values.password) {
       const username = values.email.split("@")[0];
-
+      setIsLoading(true);
       // call dk tai khoan
       registerMutation.mutate(
         {
@@ -87,6 +87,7 @@ function Login() {
 
       setSubmitting(false);
     }
+    setIsLoading(false);
   };
   return (
     <Formik

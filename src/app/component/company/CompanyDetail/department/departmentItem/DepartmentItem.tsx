@@ -6,11 +6,20 @@ import "./DepartmentItem.scss";
 import { BiSolidUserDetail } from "react-icons/bi";
 import DetailDepartment from "@/app/modal/detailDepartment/DetailDepartment";
 
-type Props = { item: IDataDepartment };
+import ApiAbilities from "@/app/api/ApiAbilities";
+import { notification } from "antd";
 
-function DepartmentItem({ item }: Props) {
+type Props = { item: IDataDepartment; idCompany: string };
+
+function DepartmentItem({ item, idCompany }: Props) {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(item);
+
+  function handleJoinDept(id: number) {
+    notification.warning({ message: "Api gán công ty bị lỗi" });
+    // ApiAbilities.updateAbilities(idCompany, { deptId: id })
+    //   .then((d) => console.log(d))
+    //   .catch((e) => console.log(e));
+  }
 
   return (
     <div className=" grid grid-cols-1 grid-rows-[h-full_1fr] md:grid-rows-1 md:grid-cols-2  mb-6">
@@ -36,7 +45,10 @@ function DepartmentItem({ item }: Props) {
               >
                 <BiSolidUserDetail />
               </span>
-              <BsPlusCircleFill className=" hover:cursor-pointer" />
+              <BsPlusCircleFill
+                onClick={() => handleJoinDept(item.id)}
+                className=" hover:cursor-pointer"
+              />
             </div>
           </span>
           <span className="flex items-center justify-between mb-4">

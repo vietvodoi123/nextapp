@@ -16,6 +16,21 @@ function getAllDepartment(id: string): Promise<IDataDepartment[]> {
     }
   );
 }
+function getAllDepartmentBySearch(
+  id: string,
+  search: string
+): Promise<IDataDepartment[]> {
+  return fetcher(
+    {
+      url: path.department,
+      method: "get",
+    },
+    {
+      "x-company-id": id,
+      search: search,
+    }
+  );
+}
 function createDepartment({
   id,
   data,
@@ -38,4 +53,5 @@ function createDepartment({
 export default {
   getAllDepartment,
   createDepartment,
+  getAllDepartmentBySearch,
 };

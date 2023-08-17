@@ -47,6 +47,8 @@ interface IFetcherOptions {
   displayError?: boolean;
   contentType?: string;
   "x-company-id"?: string;
+  search?: string;
+  searchFields?: string[];
 }
 
 export interface IRefreshToken {
@@ -156,6 +158,9 @@ export async function fetcher<T>(
         ? options.contentType
         : "application/json",
       "x-company-id": options["x-company-id"] ? options["x-company-id"] : null,
+    },
+    params: {
+      search: options.search ? options.search : null,
     },
     baseURL: Config.NETWORK_CONFIG.API_BASE_URL,
     timeout: Config.NETWORK_CONFIG.TIMEOUT,

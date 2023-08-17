@@ -13,6 +13,7 @@ const UserSlice = createSlice({
     logoutUser: () => {
       return initialState;
     },
+    
   },
 });
 

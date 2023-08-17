@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "../component/navbar/Navbar";
+import { notification } from "antd";
 
 type Props = {};
 
@@ -25,7 +26,6 @@ function Home({}: Props) {
           Lorem ipsum dolor sit amet, consectetur adipisicing elit.
           <br /> Incidunt qui nesciunt magni.
         </p>
-        N
       </div>
     </div>
   );

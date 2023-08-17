@@ -11,7 +11,11 @@ import { setNavKey, setSteps } from "@/redux/slice/NavSlice";
 import { TextInput } from "@/app/modal/textInput/TextInput";
 import { ButtonSubmit } from "@/app/modal/buttonInput/ButtonSubmit";
 
-export default function NewPassword(): JSX.Element {
+export default function NewPassword({
+  setIsLoading,
+}: {
+  setIsLoading: (value: boolean) => void;
+}): JSX.Element {
   const dispatch = useDispatch();
   const email = useSelector((state: IRootState) => state.nav.email);
   dispatch(setSteps(1));
@@ -25,6 +29,7 @@ export default function NewPassword(): JSX.Element {
       values.otp &&
       values.newPassword === values.confirmPass
     ) {
+      setIsLoading(true);
       setPassword.mutate(
         {
           email: email as string,
@@ -49,6 +54,7 @@ export default function NewPassword(): JSX.Element {
     } else {
       setSubmitting(false);
     }
+    setIsLoading(false);
   };
 
   return (

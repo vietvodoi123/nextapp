@@ -9,7 +9,47 @@ export interface ICreateCompanyBody {
   displayName: string;
   description: string;
 }
-
+export interface ICreateAbilities {
+  addUser?: {
+    email?: string;
+    profile?: {
+      phone?: string;
+    };
+    fullName?: string;
+  };
+  deptId?: number;
+  positionId?: number;
+  abilityUserStatus?: number;
+}
+export interface IDataAbilities {
+  company: IDataCompany;
+  companyAbility: string;
+  abilityUserStatus: number;
+  userId: number;
+  deptId: number;
+  positionId: number;
+  settingId: number;
+  user: IUserLogin;
+  dept: IDataDepartment;
+  position: IDataPositions;
+  setting: {
+    bgPhotoUrl: string;
+    bgPhotoPosition: number[];
+    bgColor: string;
+    id: number;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string;
+  };
+  companyId: number;
+  createdById: number;
+  updatedById: number;
+  deletedById: number;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+}
 export interface ICreateDepartment {
   photoFile: File | null;
   type: string;

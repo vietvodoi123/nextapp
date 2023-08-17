@@ -10,9 +10,9 @@ import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-type Props = {};
+type Props = { setIsLoading: (value: boolean) => void };
 
-function FormOtp({}: Props) {
+function FormOtp({ setIsLoading }: Props) {
   const dispatch = useDispatch();
   const sendOtpMutation = useMutation(ApiUser.verifyOtp);
   const email = useSelector((state: IRootState) => state.nav.email);
@@ -26,6 +26,7 @@ function FormOtp({}: Props) {
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ): void => {
     if (values.otp && email) {
+      setIsLoading(true);
       console.log(values.otp, email);
 
       sendOtpMutation.mutate(
@@ -56,6 +57,7 @@ function FormOtp({}: Props) {
       console.log("xac thuc 0 thanh cong");
       setSubmitting(false);
     }
+    setIsLoading(false);
   };
   return (
     <Formik
